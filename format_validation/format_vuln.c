@@ -6,13 +6,15 @@ int main() {
     int age;
 
     printf("=== User Registration ===\n");
-    printf("Enter your age: ");
 
-    // ❌ Không giới hạn độ dài → có thể overflow
+    printf("Enter your name: ");
     scanf("%s", input);
 
-    // ❌ Không kiểm tra format (có thể nhập chữ)
-    age = atoi(input);
+    printf("Hello: ");
+    printf(input);   
+
+    printf("\nEnter your age: ");
+    scanf("%d", &age);
 
     if(age >= 13) {
         printf("Registration successful!\n");
