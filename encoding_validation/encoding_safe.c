@@ -42,17 +42,14 @@ int contains_encoded_sequences(const char *input) {
 int is_valid(const char *input) {
     if (strlen(input) == 0) return 0;
 
-    // ❌ reject traversal patterns
     if (strstr(input, "../") || strstr(input, "..\\")) {
         return 0;
     }
 
-    // ❌ reject absolute path
     if (input[0] == '/' || input[0] == '\\') {
         return 0;
     }
 
-    // ✅ whitelist characters only
     for (int i = 0; input[i]; i++) {
         if (!(isalnum(input[i]) ||
               input[i] == '.' ||
@@ -77,28 +74,23 @@ int main() {
         return 1;
     }
 
-    // ❌ reject suspicious encoding BEFORE decode
     if (contains_encoded_sequences(input)) {
         printf("Invalid encoding detected!\n");
         return 1;
     }
 
-    // ✅ decode
     url_decode(input, decoded, sizeof(decoded));
 
-    // ❌ reject if still contains encoded pattern (defense-in-depth)
     if (strstr(decoded, "%") != NULL) {
         printf("Invalid encoding!\n");
         return 1;
     }
 
-    // ✅ validate canonical form
     if (!is_valid(decoded)) {
         printf("Invalid filename!\n");
         return 1;
     }
 
-    // ✅ safe path construction
     snprintf(path, sizeof(path), "%s/%s", BASE_DIR, decoded);
 
     printf("Opening: %s\n", path);

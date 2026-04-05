@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-Wall
 
-TARGETS=length_vuln length_vuln
+TARGETS=length_safe length_vuln
 
 all: $(TARGETS)
 
