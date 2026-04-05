@@ -5,14 +5,15 @@ int main() {
     int status;
 
     printf("Nhap so du: ");
-    scanf("%f", &balance);
+    if (scanf("%f", &balance) != 1) return 1;
 
     printf("Nhap so tien muon rut: ");
-    scanf("%f", &withdraw);
+    if (scanf("%f", &withdraw) != 1) return 1;
 
-    printf("Trang thai tai khoan (0: Khoa, 1: Hoat dong, 2: Chua dang nhap): ");
-    scanf("%d", &status);
+    printf("Trang thai (0: Khoa, 1: Hoat dong, 2: Chua dang nhap): ");
+    if (scanf("%d", &status) != 1) return 1;
 
+    // STATE VALIDATION TRƯỚC
     if (status == 2) {
         printf("Ban phai dang nhap truoc!\n");
         return 1;
@@ -23,7 +24,21 @@ int main() {
         return 1;
     }
 
-    printf("Trang thai hop le, tien hanh xu ly...\n");
+    // SEMANTIC VALIDATION SAU
+    if (withdraw <= 0) {
+        printf("So tien khong hop le!\n");
+        return 1;
+    }
+
+    if (withdraw > balance) {
+        printf("Khong du tien!\n");
+        return 1;
+    }
+
+    balance -= withdraw;
+
+    printf("Rut tien thanh cong!\n");
+    printf("So du con lai: %.2f\n", balance);
 
     return 0;
 }
