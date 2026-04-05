@@ -4,9 +4,11 @@
 #include <stdlib.h>
 
 int is_valid(const char *input) {
+    // ❌ Chỉ check đúng "../" → rất yếu
     if (strstr(input, "../") != NULL) {
         return 0;
     }
+
     return 1;
 }
 
@@ -22,12 +24,9 @@ void url_decode(const char *src, char *dest) {
             hex[2] = '\0';
 
             *dest = (char) strtol(hex, NULL, 16);
-
             src += 3;
-        } else if (*src == '+') {
-            *dest = ' '; 
-            src++;
         } else {
+            // ❌ bỏ luôn xử lý '+' → sai chuẩn URL
             *dest = *src;
             src++;
         }
@@ -41,16 +40,22 @@ int main() {
     char decoded[256];
 
     printf("Enter filename: ");
-    scanf("%255s", input);
 
+    // ❌ Không check scanf → có thể lỗi logic
+    scanf("%s", input);   // ❌ bỏ giới hạn → overflow
+
+    // ❌ Validate trên raw input (chưa decode)
     if (!is_valid(input)) {
         printf("Invalid input!\n");
         return 1;
     }
 
+    // ❌ Decode sau → bypass validation
     url_decode(input, decoded);
 
     char path[300];
+
+    // ❌ Không kiểm tra path traversal sau decode
     snprintf(path, sizeof(path), "/var/www/files/%s", decoded);
 
     printf("Opening: %s\n", path);
